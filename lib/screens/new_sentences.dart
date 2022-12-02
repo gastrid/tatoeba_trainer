@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tatoeba_trainer/models/flashcardSentence.dart';
 import 'package:provider/provider.dart';
 import 'package:tatoeba_trainer/providers/db_provider.dart';
+import 'package:tatoeba_trainer/widgets/flashcards.dart';
 
 
 
@@ -50,7 +51,7 @@ class _NewSentencesState extends State<NewSentences> {
       ),
       body: _isLoading == true ? 
       const Center(child: CircularProgressIndicator()) : 
-      Container()// This trailing comma makes auto-formatting nicer for build methods.
+      Flashcards(sentences: _sentences)// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

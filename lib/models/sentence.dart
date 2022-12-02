@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
 class SourceSentence {
-  String id;
+  int id;
   String lang;
   String sentence;
 
   SourceSentence({
     required this.id,
-  required this.lang,
+  this.lang = "english",
   required this.sentence,
   });
 
@@ -22,8 +22,8 @@ class SourceSentence {
 }
 
 class TargetSentence {
-  String id;
-  String source_id;
+  int id;
+  // String source_id;
   String lang;
   String sentence;
   bool saved;
@@ -31,18 +31,17 @@ class TargetSentence {
 
   TargetSentence({
     required this.id,
-  required this.source_id,
+  // required this.source_id,
   required this.lang,
   required this.sentence,
-  required this.saved,
-  required this.hide,
+  this.saved = false,
+  this.hide = false,
   });
 
   @override
   String toString() {
     return """
     id: ${this.id},
-    source_id: ${this.source_id},
     lang: ${this.lang},
     sentence: ${this.sentence},
     saved: ${this.saved},

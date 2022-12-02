@@ -11,6 +11,7 @@ import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
+import 'package:tatoeba_trainer/models/sentence.dart';
 
 
 class DbProvider extends ChangeNotifier {
@@ -64,11 +65,10 @@ class DbProvider extends ChangeNotifier {
 
     await db.rawQuery("""
     select 
-      sources.id,
-      sources.sentence,
-      targets.id,
-      targets.source_ID,
-      targets.sentence 
+      sources.id as source_id,
+      sources.sentence as source_sentence,
+      targets.id as target_id,
+      targets.sentence as target_sentence
     from sources join targets on sources.id = targets.source_ID
     where 
       targets.hide=${hide ? 1 : 0} and
@@ -76,8 +76,21 @@ class DbProvider extends ChangeNotifier {
       targets.lang="${language_map[language]}" 
     order by 
       random() limit ${limit};
-      """).then((value) => {
-        print(value)
+      """).then((value) {
+        // print(value);
+        value.forEach((element) {
+          sentences.add(FlashcardSentence(
+            key: element["source_id"] as int,
+            source: SourceSentence(
+              id: element["source_id"] as int,
+              sentence: element["source_sentence"] as String,
+              ),
+              targets: [TargetSentence(
+                id: element["target_id"] as int,
+                lang: language,
+                sentence: element["target_sentence"] as String,
+                )]));
+        });
       });
 
   db.close();

@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'sentence.dart';
 
 class FlashcardSentence {
-  String key;
+  int key;
   SourceSentence source;
   List<TargetSentence> targets;
 
