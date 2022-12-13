@@ -5,6 +5,8 @@ class LanguagePicker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final deviceSize = MediaQuery.of(context).size;
+    final image_width = deviceSize.width / 3;
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
@@ -21,32 +23,102 @@ class LanguagePicker extends StatelessWidget {
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(onPressed: () {
-              Navigator.of(context).pushNamed("/russian");
-            }
-            , child: 
-            Text("Russian")),
-            TextButton(onPressed: () {
-              Navigator.of(context).pushNamed("/chinese");
-            }
-            , child: 
-            Text("Chinese")),
+          children: [
+            Expanded(
+              flex: 4,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: <Widget>[
+                  Text("Pick a language",
+                      style: Theme.of(context).textTheme.headline3),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/russian");
+                      },
+                      style: ButtonStyle(
+                        padding:
+                            MaterialStateProperty.all(EdgeInsets.all(10.0)),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.asset(
+                              "assets/images/russian-flag.jpeg",
+                              width: image_width,
+                            ),
+                          ),
+                          Text("Russian")
+                        ],
+                      )),
+                  // SizedBox(
+                  //   height: 10,
+                  // ),
+                  ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/chinese");
+                      },
+                      style: ButtonStyle(
+                        padding:
+                            MaterialStateProperty.all(EdgeInsets.all(10.0)),
+                      ),
+                      child: Column(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image.asset(
+                              "assets/images/chinese-flag.png",
+                              width: image_width,
+                            ),
+                          ),
+                          Text("Chinese")
+                        ],
+                      )),
+                  SizedBox(
+                    height: 10,
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              height: 50,
+              decoration: BoxDecoration(
+                  color: Theme.of(context).primaryColorDark,
+                  boxShadow: const [
+                    BoxShadow(
+                        color: Colors.black12,
+                        offset: Offset(0, -.1),
+                        blurRadius: 0)
+                  ]),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  TextButton(
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColorDark,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/design-colours");
+                      },
+                      child: Text(
+                          style:
+                              TextStyle(color: Theme.of(context).canvasColor),
+                          "Design colours")),
+                  TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).primaryColorDark),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pushNamed("/design-texts");
+                      },
+                      child: Text(
+                        style: TextStyle(color: Theme.of(context).canvasColor),
+                        "Design texts",
+                      ))
+                ],
+              ),
+            ),
           ],
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

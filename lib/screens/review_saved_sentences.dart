@@ -6,16 +6,16 @@ import 'package:tatoeba_trainer/widgets/flashcards.dart';
 
 
 
-class NewSentences extends StatefulWidget {
-  const NewSentences({ Key? key, required this.language }) : super( key: key);
+class ReviewSavedSentences extends StatefulWidget {
+  const ReviewSavedSentences({ Key? key, required this.language }) : super( key: key);
 
   final String language;
 
   @override
-  _NewSentencesState createState() => _NewSentencesState();
+  _ReviewSavedSentencesState createState() => _ReviewSavedSentencesState();
 }
 
-class _NewSentencesState extends State<NewSentences> {
+class _ReviewSavedSentencesState extends State<ReviewSavedSentences> {
   late List<FlashcardSentence> _sentences;
 
   var _isInit = true;
@@ -29,7 +29,10 @@ class _NewSentencesState extends State<NewSentences> {
       setState(() {
         _isLoading = true;
       });
-      Provider.of<DbProvider>(context, listen: false).getRandom(widget.language, limit).then((sentences) {
+      Provider.of<DbProvider>(context, listen: false).getRandom(
+        widget.language,
+        limit,
+        saved: true).then((sentences) {
         setState(() {
           _isLoading = false;
           _sentences = sentences;

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tatoeba_trainer/providers/db_provider.dart';
+import 'package:tatoeba_trainer/screens/design_colours.dart';
+import 'package:tatoeba_trainer/screens/design_texts.dart';
 import 'package:tatoeba_trainer/screens/language_picker.dart';
 import 'package:tatoeba_trainer/screens/mode_picker.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +36,8 @@ class MyApp extends StatelessWidget {
         routes: {
           ModePicker.chineseRoute: (ctx) => ModePicker(language: ModePicker.chinese),
           ModePicker.russianRoute: (ctx) => ModePicker(language: ModePicker.russian),
+          DesignColours.route: (ctx) => DesignColours(),
+          DesignTexts.route: (ctx) => DesignTexts(),
         },
       ),
     );

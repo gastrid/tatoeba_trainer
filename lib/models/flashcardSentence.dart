@@ -4,12 +4,12 @@ import 'sentence.dart';
 class FlashcardSentence {
   int key;
   SourceSentence source;
-  List<TargetSentence> targets;
+  TargetSentence target;
 
   FlashcardSentence({
     required this.key,
     required this.source,
-  required this.targets,
+  required this.target,
   });
 }
 

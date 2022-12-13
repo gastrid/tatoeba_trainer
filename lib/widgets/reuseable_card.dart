@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ReusableCard extends StatelessWidget {
-  ReusableCard({required this.text});
+  ReusableCard({required this.text, this.pinyin});
   final String text;
+  final String? pinyin;
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,15 @@ class ReusableCard extends StatelessWidget {
           padding: const EdgeInsets.all(10.0),
           child: Center(
             child:
-                Text(text, textAlign: TextAlign.center),
+                pinyin == null ? 
+                Text(text, textAlign: TextAlign.center) : 
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(text, textAlign: TextAlign.center),
+                    Text(pinyin!, textAlign: TextAlign.center),
+                  ],
+                ),
           ),
         ),
       ),
