@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tatoeba_trainer/models/flashcardSentence.dart';
 import 'package:provider/provider.dart';
 import 'package:tatoeba_trainer/providers/db_provider.dart';
-import 'package:tatoeba_trainer/widgets/flashcards.dart';
+import 'package:tatoeba_trainer/widgets/flashcard_scroller.dart';
 
 
 
@@ -21,7 +21,7 @@ class _NewSentencesState extends State<NewSentences> {
   var _isInit = true;
   var _isLoading = false;
 
-  final limit = 10; // TODO: make this modular
+  final limit = 10; 
 
   @override
   void didChangeDependencies() {
@@ -50,7 +50,7 @@ class _NewSentencesState extends State<NewSentences> {
       ),
       body: _isLoading == true ? 
       const Center(child: CircularProgressIndicator()) : 
-      Flashcards(sentences: _sentences, isChinese: widget.language == "chinese",)// This trailing comma makes auto-formatting nicer for build methods.
+      FlashcardScroller(sentences: _sentences, isChinese: widget.language == "chinese",)// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

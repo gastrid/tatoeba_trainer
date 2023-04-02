@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:tatoeba_trainer/providers/db_provider.dart';
 import 'package:tatoeba_trainer/screens/review_saved_sentences.dart';
 import 'package:tatoeba_trainer/widgets/pair_row.dart';
-import 'package:tatoeba_trainer/widgets/flashcards.dart';
+import 'package:tatoeba_trainer/widgets/flashcard_scroller.dart';
 
 class SavedSentences extends StatefulWidget {
   const SavedSentences({Key? key, required this.language}) : super(key: key);
@@ -51,7 +51,6 @@ class _SavedSentencesState extends State<SavedSentences> {
             setState(() {
               _hasMore = hasMore;
               _isLoading = false;
-              print("is loading false");
               
             });
           } );

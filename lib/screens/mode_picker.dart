@@ -24,7 +24,8 @@ class ModePicker extends StatelessWidget {
         title: Text(widget_title),
       ),
       body: FutureBuilder(
-          future: Provider.of<DbProvider>(context).initDb(),
+        // TODO: remove this future
+          future: Provider.of<DbProvider>(context).initialization,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());

@@ -14,18 +14,19 @@ import 'package:path/path.dart';
 import 'package:tatoeba_trainer/models/sentence.dart';
 
 class DbProvider extends ChangeNotifier {
-  static const target_table = "targets";
-  static const source_table = "sources";
+  static final DbProvider _instance = new DbProvider.internal();
+  factory DbProvider() => _instance; 
+  final _completer = Completer<void>();
+  
+  static late Database _db;
 
-  final Map<String, String> language_map = {"russian": "ru", "chinese": "cn"};
+  DbProvider.internal() {
+    _initDb();
+  }
 
-  late String path;
+  Future<void> get initialization => _completer.future;
 
-  List<FlashcardSentence> saved_sentences = [];
-  var sentence_count = 0;
-
-
-  Future<void> initDb() async {
+  Future<void> _initDb() async {
     var databasesPath = await getDatabasesPath();
     path = join(databasesPath, "sentences.db");
 
@@ -48,18 +49,33 @@ class DbProvider extends ChangeNotifier {
 
       // Write and flush the bytes written
       await File(path).writeAsBytes(bytes, flush: true);
+
     }
+    _db = await openDatabase(path);
+
+    _completer.complete();
   }
+
+  static const target_table = "targets";
+  static const source_table = "sources";
+
+  final Map<String, String> language_map = {"russian": "ru", "chinese": "cn"};
+
+  late String path;
+
+  List<FlashcardSentence> saved_sentences = [];
+  var sentence_count = 0;
+
+
 
   Future<bool> getSaved(String language, bool erase,
       {int limit = 10}) async {
     if (erase) {
       saved_sentences = [];
     }
-    final db = await openDatabase(path);
     bool hasMore = true;
-
-    await db.rawQuery("""
+    final start = DateTime.now().millisecondsSinceEpoch;
+    await _db.rawQuery("""
     select 
       sources.id as source_id,
       sources.sentence as source_sentence,
@@ -75,7 +91,8 @@ class DbProvider extends ChangeNotifier {
     limit ${limit}
     offset ${saved_sentences.length};
       """).then((value) {
-      // print(value);
+      final timeElapsted = DateTime.now().millisecondsSinceEpoch - start;
+      print("time elapsed ${timeElapsted}");
       if (value.length < limit) {
         hasMore = false;
       }
@@ -96,19 +113,22 @@ class DbProvider extends ChangeNotifier {
       });
     });
     sentence_count = saved_sentences.length;
-    print("updating sentence_count: ${sentence_count}");
-    db.close();
+    _db.close();
     notifyListeners();
     return hasMore;
   }
 
   Future<List<FlashcardSentence>> getRandom(String language, int limit,
       {bool saved = false, bool hide = false}) async {
-    final db = await openDatabase(path);
 
     List<FlashcardSentence> sentences = [];
 
-    await db.rawQuery("""
+    print(this.hashCode);
+
+
+    final start = DateTime.now().millisecondsSinceEpoch;
+
+    await _db.rawQuery("""
     select 
       sources.id as source_id,
       sources.sentence as source_sentence,
@@ -122,7 +142,8 @@ class DbProvider extends ChangeNotifier {
     order by 
       random() limit ${limit};
       """).then((value) {
-      // print(value);
+      final timeElapsted = DateTime.now().millisecondsSinceEpoch - start;
+      print("time elapsed ${timeElapsted}");
       value.forEach((element) {
         sentences.add(FlashcardSentence(
             key: element["source_id"] as int,
@@ -140,31 +161,27 @@ class DbProvider extends ChangeNotifier {
       });
     });
 
-    db.close();
+    _db.close();
     return sentences;
   }
 
   Future<void> saveSentence(int id) async {
-    final db = await openDatabase(path);
-    await db
+    await _db
         .rawUpdate("update targets set saved=1 where id=${id};"); // PICKUP HERE
   }
 
   Future<void> unsaveSentence(int id) async {
-    final db = await openDatabase(path);
-    await db
+    await _db
         .rawUpdate("update targets set saved=0 where id=${id};"); // PICKUP HERE
   }
 
   Future<void> hideSentence(int id) async {
-    final db = await openDatabase(path);
-    await db
+    await _db
         .rawUpdate("update targets set hide=1 where id=${id};"); // PICKUP HERE
   }
 
   Future<void> unhideSentence(int id) async {
-    final db = await openDatabase(path);
-    await db
+    await _db
         .rawUpdate("update targets set hide=0 where id=${id};"); // PICKUP HERE
   }
 }

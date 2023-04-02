@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'Tatoeba trainer',
         theme: ThemeData(
           colorSchemeSeed: Color.fromARGB(255,13,112,223),
           ),

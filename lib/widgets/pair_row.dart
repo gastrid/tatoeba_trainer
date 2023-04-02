@@ -19,7 +19,8 @@ class PairRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final pinyin = language == "chinese"
         ? PinyinHelper.getPinyin(targetSentence,
-            format: PinyinFormat.WITH_TONE_MARK).trim()
+                format: PinyinFormat.WITH_TONE_MARK)
+            .trim()
         : null;
     final deviceSize = MediaQuery.of(context).size;
     return Container(
@@ -35,39 +36,29 @@ class PairRow extends StatelessWidget {
             // Expanded(
             //   flex: 4,
             //   child:
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 10,
-                ),
-                // Icon(Icons.subdirectory_arrow_right,
-                //     color: Theme.of(context).disabledColor, size: 20),
-                pinyin == null
-                    ? ConstrainedBox(
-                        constraints: BoxConstraints(maxHeight: 50),
-                        child: Text(
-                          targetSentence,
-                          style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                color: Theme.of(context).hintColor,
-                              ),
-                        ))
-                    : ConstrainedBox(
-                        constraints:
-                            BoxConstraints(maxHeight: 100, minHeight: 50),
-                        child: 
-                            Text(
-                              "${targetSentence} ${pinyin}",
-                              style: Theme.of(context).textTheme.titleLarge!.copyWith(
-                                color: Theme.of(context).hintColor,
-                              ),
-                            ),
-
-                      )
-              ],
-            ),
+            pinyin == null
+                ? Container(
+                    // constraints: BoxConstraints(maxHeight: 50),
+                    child: Text(
+                    targetSentence,
+                    style: Theme.of(context).textTheme.titleLarge!.copyWith(
+                          color: Theme.of(context).hintColor,
+                        ),
+                  ))
+                : Container(
+                    // constraints:
+                    // BoxConstraints(maxHeight: 100, minHeight: 50),
+                    child: Flexible(
+                      child: Text("${targetSentence} ${pinyin}",
+                          style:
+                              Theme.of(context).textTheme.titleLarge!.copyWith(
+                                    color: Theme.of(context).hintColor,
+                                  )),
+                    ),
+                  ),
             // ),
             Divider(
+              
               height: 1,
             )
           ]),
